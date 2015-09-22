@@ -31,12 +31,12 @@ Your script:</p>
 Your script:</p>
 <p>
 <code>
-	require_once(‘path to file/bookedapi.php’);
-	//some of your code
-	startsession();
-	$username = ‘your_booked_admin_username’;
-	$password = ‘your_booked_admin_password;
-	$bookedapiclient = new bookedapiclient($username, $password);
+	require_once(‘path to file/bookedapi.php’);<br>
+	//some of your code<br>
+	startsession();<br>
+	$username = ‘your_booked_admin_username’;<br>
+	$password = ‘your_booked_admin_password;<br>
+	$bookedapiclient = new bookedapiclient($username, $password);<br>
 </code>
 </p>
 <p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password.</p>
@@ -44,30 +44,30 @@ Your script:</p>
 <p>Next before you make any API calls, you must call <code>authenticate(true)</code> at least once. After that the client will automatically check to see if you are still authenticated to help the library preform faster by not having to re-authenticate every call. The library will also automatically re-authenticate you if it finds that your session token has expired. For example:</p>
 <p>
 <code>
-	require_once(‘path to file/bookedapi.php’);
-	//some of your code
-	startsession();
-	$username = ‘your_booked_admin_username’;
-	$password = ‘your_booked_admin_password;
-	$bookedapiclient = new bookedapiclient($username, $password);
-	$bookedapiclient-> authenticate(true);
+	require_once(‘path to file/bookedapi.php’);<br>
+	//some of your code<br>
+	startsession();<br>
+	$username = ‘your_booked_admin_username’;<br>
+	$password = ‘your_booked_admin_password;<br>
+	$bookedapiclient = new bookedapiclient($username, $password);<br>
+	$bookedapiclient-> authenticate(true);<br>
 </code>	
 <div>
 </p>
 <p>Next you want to make your API call. We will get the current authenticated users reservations, like this:</p>
 <p>
 <code>
-	require_once(‘path to file/bookedapi.php’);
-	//some of your code
-	startsession();
-	$username = ‘your_booked_admin_username’;
-	$password = ‘your_booked_admin_password;
-	$bookedapiclient = new bookedapiclient($username, $password);
-	$bookedapiclient-> authenticate(true);
-	//call the get all reservation command
-	$allReservations = $bookedapiclient->getReservations();
-	//print the result to the screen
-	print_r($allReservations);
+	require_once(‘path to file/bookedapi.php’);<br>
+	//some of your code<br>
+	startsession();<br>
+	$username = ‘your_booked_admin_username’;<br>
+	$password = ‘your_booked_admin_password;<br>
+	$bookedapiclient = new bookedapiclient($username, $password);<br>
+	$bookedapiclient-> authenticate(true);<br>
+	//call the get all reservation command<br>
+	$allReservations = $bookedapiclient->getReservations();<br>
+	//print the result to the screen<br>
+	print_r($allReservations);<br>
 </code>
 </p>
 
