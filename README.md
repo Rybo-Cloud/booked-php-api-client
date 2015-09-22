@@ -38,7 +38,7 @@ Your script:</p>
 <code>	$bookedapiclient = new bookedapiclient($username, $password);</code><br>
 
 
-<p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password. If you don't want to change the const BOOKEDAPIURL and instead would like to set it at runtime then do this instead:</p>
+<p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password. If you don't want to change the <code>const BOOKEDAPIURL</code> in the configuration file and instead would like to set it at runtime then do this instead (changes to the above code in <strong>bold</strong>):</p>
 
 <code>	require_once(‘path to file/bookedapi.php’);</code><br>
 <code>	//some of your code</code><br>
