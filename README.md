@@ -34,11 +34,19 @@ Your script:</p>
 <code>	//some of your code</code><br>
 <code>	startsession();</code><br>
 <code>	$username = ‘your_booked_admin_username’;</code><br>
-<code>	$password = ‘your_booked_admin_password;</code><br>
+<code>	$password = ‘your_booked_admin_password';</code><br>
 <code>	$bookedapiclient = new bookedapiclient($username, $password);</code><br>
 
 
-<p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password.</p>
+<p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password. If you don't want to change the const BOOKEDAPIURL and instead would like to set it at runtime then do this instead:</p>
+
+<code>	require_once(‘path to file/bookedapi.php’);</code><br>
+<code>	//some of your code</code><br>
+<code>	startsession();</code><br>
+<code>	$username = ‘your_booked_admin_username’;</code><br>
+<code>	$password = ‘your_booked_admin_password';</code><br>
+<strong><code>	$bookedApiUrl = ‘http://your-domain/booked/web/services/index.php';</code></strong><br>
+<code>	$bookedapiclient = new bookedapiclient($username, $password, <strong>$bookedApiUrl</strong>);</code><br>
 
 <p>Next before you make any API calls, you must call <code>authenticate(true)</code> at least once. After that the client will automatically check to see if you are still authenticated to help the library preform faster by not having to re-authenticate every call. The library will also automatically re-authenticate you if it finds that your session token has expired. For example:</p>
 <code>	require_once(‘path to file/bookedapi.php’);</code><br>
