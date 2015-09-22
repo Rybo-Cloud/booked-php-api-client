@@ -30,41 +30,37 @@ Your script:</p>
 <br>
 Your script:</p>
 
-<code>
-	require_once(‘path to file/bookedapi.php’);<br>
-	//some of your code<br>
-	startsession();<br>
-	$username = ‘your_booked_admin_username’;<br>
-	$password = ‘your_booked_admin_password;<br>
-	$bookedapiclient = new bookedapiclient($username, $password);<br>
-</code>
+<code>	require_once(‘path to file/bookedapi.php’);</code><br>
+<code>	//some of your code</code><br>
+<code>	startsession();</code><br>
+<code>	$username = ‘your_booked_admin_username’;</code><br>
+<code>	$password = ‘your_booked_admin_password;</code><br>
+<code>	$bookedapiclient = new bookedapiclient($username, $password);</code><br>
+
 
 <p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password.</p>
 
 <p>Next before you make any API calls, you must call <code>authenticate(true)</code> at least once. After that the client will automatically check to see if you are still authenticated to help the library preform faster by not having to re-authenticate every call. The library will also automatically re-authenticate you if it finds that your session token has expired. For example:</p>
-<code>
-	require_once(‘path to file/bookedapi.php’);<br>
-	//some of your code<br>
-	startsession();<br>
-	$username = ‘your_booked_admin_username’;<br>
-	$password = ‘your_booked_admin_password;<br>
-	$bookedapiclient = new bookedapiclient($username, $password);<br>
-	$bookedapiclient-> authenticate(true);<br>
-</code>	
+<code>	require_once(‘path to file/bookedapi.php’);</code><br>
+<code>	//some of your code</code><br>
+<code>	startsession();</code><br>
+<code>	$username = ‘your_booked_admin_username’;</code><br>
+<code>	$password = ‘your_booked_admin_password;</code><br>
+<code>	$bookedapiclient = new bookedapiclient($username, $password);</code><br>
+<code>	$bookedapiclient-> authenticate(true);</code><br>
+
 <p>Next you want to make your API call. We will get the current authenticated users reservations, like this:</p>
-<code>
-	require_once(‘path to file/bookedapi.php’);<br>
-	//some of your code<br>
-	startsession();<br>
-	$username = ‘your_booked_admin_username’;<br>
-	$password = ‘your_booked_admin_password;<br>
-	$bookedapiclient = new bookedapiclient($username, $password);<br>
-	$bookedapiclient-> authenticate(true);<br>
-	//call the get all reservation command<br>
-	$allReservations = $bookedapiclient->getReservations();<br>
-	//print the result to the screen<br>
-	print_r($allReservations);<br>
-</code>
+<code>	require_once(‘path to file/bookedapi.php’);</code><br>
+<code>	//some of your code</code><br>
+<code>	startsession();</code><br>
+<code>	$username = ‘your_booked_admin_username’;</code><br>
+<code>	$password = ‘your_booked_admin_password;</code><br>
+<code>	$bookedapiclient = new bookedapiclient($username, $password);</code><br>
+<code>	$bookedapiclient-> authenticate(true);</code><br>
+<code>	//call the get all reservation command</code><br>
+<code>	$allReservations = $bookedapiclient->getReservations();</code><br>
+<code>	//print the result to the screen</code><br>
+<code>	print_r($allReservations);</code><br>
 
 <p>If the call succeeds it will return a decoded json PHP associative array. If the call fails it will not return a reason why it will just return a Boolean false. In my next release, when I have some more free time, I was thinking about adding more useable error messages in the return. However for now this should work just fine.</p>  
 <p>For creating reservations, attributes and resources, there are some static methods in the class that can be used to help build the needed objects to then pass the related functions. I’m running out of time for now, but will be updating this readme with more examples.</p>
