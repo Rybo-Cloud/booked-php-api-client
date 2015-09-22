@@ -14,9 +14,7 @@ Please report any bugs or suggestions to ryan@mytrueserenity.com</p>
 The line that reads:</p> 
 <p>
 <code>
-<?PHP
 const BOOKEDAPIURL = ‘http://your-domain/booked/web/services/index.php’;
-?>
 </code>
 </p>
 <p>needs to be changed to the URL of your booked API endpoint. You must also make sure the Booked configuration file has the option to enable the API set to ‘true’.</p>
@@ -25,9 +23,7 @@ const BOOKEDAPIURL = ‘http://your-domain/booked/web/services/index.php’;
 Your script:</p>
 <p>
 <code>
-<?PHP
 	require_once(‘path to file/bookedapi.php’);
-?>
 </code>
 </p>
 <p>Next, you need to make sure you use PHP’s <code>startsession();</code>. The class library uses the $_SESSION global to store authentication information and will fail if not used. So before you call anything other than the _construct function, remember to call <code>startsession();</code> first, like this…
@@ -35,15 +31,12 @@ Your script:</p>
 Your script:</p>
 <p>
 <code>
-<?PHP
 	require_once(‘path to file/bookedapi.php’);
 	//some of your code
 	startsession();
 	$username = ‘your_booked_admin_username’;
 	$password = ‘your_booked_admin_password;
 	$bookedapiclient = new bookedapiclient($username, $password);
-	
-?>
 </code>
 </p>
 <p>Then, in the above example, replace the variable <code>$username</code> with your Booked user name and <code>$password</code> with your Booked password.</p>
@@ -51,7 +44,6 @@ Your script:</p>
 <p>Next before you make any API calls, you must call <code>authenticate(true)</code> at least once. After that the client will automatically check to see if you are still authenticated to help the library preform faster by not having to re-authenticate every call. The library will also automatically re-authenticate you if it finds that your session token has expired. For example:</p>
 <p>
 <code>
-<?PHP
 	require_once(‘path to file/bookedapi.php’);
 	//some of your code
 	startsession();
@@ -59,14 +51,12 @@ Your script:</p>
 	$password = ‘your_booked_admin_password;
 	$bookedapiclient = new bookedapiclient($username, $password);
 	$bookedapiclient-> authenticate(true);
-	
-?>
+</code>	
 <div>
 </p>
 <p>Next you want to make your API call. We will get the current authenticated users reservations, like this:</p>
 <p>
 <code>
-<?PHP
 	require_once(‘path to file/bookedapi.php’);
 	//some of your code
 	startsession();
@@ -75,11 +65,9 @@ Your script:</p>
 	$bookedapiclient = new bookedapiclient($username, $password);
 	$bookedapiclient-> authenticate(true);
 	//call the get all reservation command
-$allReservations = $bookedapiclient->getReservations();
-//print the result to the screen
+	$allReservations = $bookedapiclient->getReservations();
+	//print the result to the screen
 	print_r($allReservations);
-	
-?>
 </code>
 </p>
 
