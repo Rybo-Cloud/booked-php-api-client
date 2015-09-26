@@ -88,9 +88,8 @@ class bookedAPIclient {
 	}
 	
 	/**
-	 * Used to set $_SESSION var for authentification.
-	 * There is no need to call this on your own because it's called atomatically by the class when needed.
-	 *
+	 * Call this function once with force set to true, after you call PHP's startsession()
+	 * 
 	 * Returns true on success and false if call fails.
 	 *
 	 * @param boolean $force
