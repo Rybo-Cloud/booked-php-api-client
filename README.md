@@ -1,12 +1,12 @@
 # booked-php-api-client
 Booked PHP API Client Library
-by ryan@mytrueserenity.com
+by ryan@mytrueserenity.com ( ryanccrawford@live.com )
 
 <h2>Hello every one!</h2>
 
 <p>This is a simple to use PHP client library to be used with Booked (formerly phpScheduleIt) RESTful API by nick@twinkletoessoftware.com found at <a href='http://sourceforge.net/projects/phpscheduleit'>Booked Home</a></p>
 <p>So here is the first beta of the library. Please report any bugs or suggestions to <a href="mailto:ryan@mytrueserenity.com">ryan@mytrueserenity.com</a></p>
-<p>This project started as a way for me to design a customized Rental Booking System for a wonderful place called <a href='https://mytrueserenity.com'>True Serenity</a>. So because I have yet to make a contribution to the wonderful world of open source software, I decided to make this my first public attempt. I hope it is useful to someone. I would be open to suggestions and comments. Please be kind, as this is my very first public PHP program. If there is something I’m not doing right or maybe a better way to do it then let me know! Notes: I understand the code should be broken down into several classes for each object type and many other silly things. My main goal was to have something that worked and something simple. </p>
+<p>This project started as a way for me to design a customized Rental Booking System for a wonderful place called <a href='https://mytrueserenity.com'>True Serenity</a>. So because I have yet to make a contribution to the wonderful world of open source software, I decided to make this my first public attempt. I hope it is useful to someone.</p>
 <h1>INSTALLATION</h1>
 <ul><li>You must have PHP5.5 or higher</li></ul>
 <p>1st - You need to edit the bookedapiconfig.php file
