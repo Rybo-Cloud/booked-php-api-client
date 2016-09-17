@@ -1058,11 +1058,11 @@ class bookedAPIclient {
 	public static function buildParticipantsObject($participants = array()) {
 		return $participants;
 	}
-	public static function buildResourceObject($resourceId) {
+	/*public static function buildResourceObject($resourceId) {
 		$r = ( int ) $resourceId;
 		
 		return $r;
-	}
+	}*/
 	public static function buildResourcesObject($resources = array()) {
 		$resources;
 		
