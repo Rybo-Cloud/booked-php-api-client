@@ -888,7 +888,7 @@ class bookedAPIclient {
 		}
 		
 		if ($method == 'delete') {
-			    $ch = curl_init();
+			    //$ch = curl_init();
 			    curl_setopt ( $this->ch, CURLOPT_POST, false );
 			    curl_setopt ( $this->ch, CURLOPT_HTTPGET, false );
     			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
