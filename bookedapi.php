@@ -954,9 +954,13 @@ class bookedAPIclient {
 	 * @return boolean
 	 */
 	private static function isAuthenticated() {
-		$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'], new DateTimeZone ( YOURTIMEZONE ) );
+		date_default_timezone_set(YOURTIMEZONE);
+		
+		//$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'], new DateTimeZone ( YOURTIMEZONE ) );
+		$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'] );
 
-		$date2 = new DateTime ( date ( DATE_ISO8601, time () ), new DateTimeZone ( YOURTIMEZONE ) );
+		//$date2 = new DateTime ( date ( DATE_ISO8601, time () ), new DateTimeZone ( YOURTIMEZONE ) );
+		$date2 = new DateTime ( date ( DATE_ISO8601, time () ) );
 		
 		$minutesInterval = date_interval_create_from_date_string ( '1 minute' );
 		
