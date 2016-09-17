@@ -875,6 +875,8 @@ class bookedAPIclient {
 		
 		if ($method == 'post') {
 			curl_setopt ( $this->ch, CURLOPT_POST, true );
+			curl_setopt ( $this->ch, CURLOPT_HTTPGET, false );
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt ( $ch, CURLOPT_HTTPHEADER, array (
 					'Content-Type: application/json' 
 			) );
@@ -905,6 +907,7 @@ class bookedAPIclient {
 		if ($method == 'get') {
 			curl_setopt ( $this->ch, CURLOPT_POST, false );
 			curl_setopt ( $this->ch, CURLOPT_HTTPGET, true );
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 			$this->buildAuthHttpHeader ( $params ['SessionToken'], $params ['UserId'] );
 		}
 		
