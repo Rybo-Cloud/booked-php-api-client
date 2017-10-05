@@ -875,6 +875,8 @@ class bookedAPIclient {
 		
 		if ($method == 'post') {
 			curl_setopt ( $this->ch, CURLOPT_POST, true );
+			curl_setopt ( $this->ch, CURLOPT_HTTPGET, false );
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt ( $ch, CURLOPT_HTTPHEADER, array (
 					'Content-Type: application/json' 
 			) );
@@ -888,7 +890,7 @@ class bookedAPIclient {
 		}
 		
 		if ($method == 'delete') {
-			    $ch = curl_init();
+			    //$ch = curl_init();
 			    curl_setopt ( $this->ch, CURLOPT_POST, false );
 			    curl_setopt ( $this->ch, CURLOPT_HTTPGET, false );
     			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -905,6 +907,7 @@ class bookedAPIclient {
 		if ($method == 'get') {
 			curl_setopt ( $this->ch, CURLOPT_POST, false );
 			curl_setopt ( $this->ch, CURLOPT_HTTPGET, true );
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 			$this->buildAuthHttpHeader ( $params ['SessionToken'], $params ['UserId'] );
 		}
 		
@@ -951,9 +954,13 @@ class bookedAPIclient {
 	 * @return boolean
 	 */
 	private static function isAuthenticated() {
-		$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'], new DateTimeZone ( YOURTIMEZONE ) );
+		date_default_timezone_set(YOURTIMEZONE);
+		
+		//$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'], new DateTimeZone ( YOURTIMEZONE ) );
+		$date1 = new DateTime ( $_SESSION ['bookedapi_sessionExpires'] );
 
-		$date2 = new DateTime ( date ( DATE_ISO8601, time () ), new DateTimeZone ( YOURTIMEZONE ) );
+		//$date2 = new DateTime ( date ( DATE_ISO8601, time () ), new DateTimeZone ( YOURTIMEZONE ) );
+		$date2 = new DateTime ( date ( DATE_ISO8601, time () ) );
 		
 		$minutesInterval = date_interval_create_from_date_string ( '1 minute' );
 		
@@ -1051,7 +1058,7 @@ class bookedAPIclient {
 	public static function buildParticipantsObject($participants = array()) {
 		return $participants;
 	}
-	public static function buildResourceObject($resourceId) {
+	public static function getResourceObject($resourceId) {
 		$r = ( int ) $resourceId;
 		
 		return $r;
