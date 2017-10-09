@@ -183,21 +183,17 @@ class Client{
     }
 
     //$options is array of $referenceNumber = null, $userId = null, $resourceId = null, $scheduleId = null, $startDateTime = null, $endDateTime = null
-    public function getReservation($options = array()){
+    public function getReservation($referenceNumber, $options = array()){
   
+        $endpoint = $this->root . tr_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
+       
         if(isset($options) && count($options) > 0){
   
-            $endpoint = $this -> root . config::FILTERRESERVATION . $this->buildFilters($options);
+            $endpoint .= $this->buildFilters($options);
       
-        }else{
-            return false;
         }
   
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -292,6 +288,16 @@ class Client{
 
         return $result;
 
+    }
+    
+    public function getResourceAvailability($resourceId){
+       
+        $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
+  
+        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
+
+        return $result;
+        
     }
 
     /**
@@ -409,13 +415,9 @@ class Client{
      */
     public function updateCustomAttribute($attributeId, $attibuteObject){
 
-        $endpoint = $this -> root . config::GETATTRIBUTE . $attributeId;
+        $endpoint = $this -> root . str_replace(':attributeId', $attributeId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, $attibuteObject, 'post', true);
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -431,10 +433,6 @@ class Client{
         $endpoint = $this -> root . config::GETATTRIBUTE . $attributeId;
 
         $result = $this -> call($endpoint, null, 'delete', true);
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -523,6 +521,26 @@ class Client{
 
     }
 
+    public function checkInReservation($referenceNumber){
+        
+        $endpoint = $this -> root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
+
+        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
+
+        return $result;
+
+        
+    }
+    
+    public function checkOutReservation($referenceNumber){
+        
+        $endpoint = $this -> root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
+
+        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
+
+        return $result;
+
+    }
     /**
      *
      * @param array $reservationObject        	
@@ -536,7 +554,7 @@ class Client{
 
     public function approveReservation($referenceNumber){
 
-        $endpoint = $this -> root . config::RESERVATIONS . $referenceNumber . '/Approval';
+        $endpoint = $this -> root .  str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, 'post', null, true);
 
