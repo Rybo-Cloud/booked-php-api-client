@@ -171,7 +171,7 @@ class Client{
      */
     public function getAllReservations(){
 
-        $endpoint = $this -> root . config::GETRESERVATIONS;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
@@ -211,7 +211,7 @@ class Client{
      */
     public function getAllSchedules(){
 
-        $endpoint = $this -> root . config::SCHEDULES;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
@@ -230,12 +230,9 @@ class Client{
      */
     public function getSchedule($scheduleId){
 
-        $endpoint = $this -> root . config::SCHEDULES . '/' . $scheduleId;
+        $endpoint = $this -> root . str_replace(':scheduleId', $scheduleId, config::$routes[__FUNCTION__]);
+        
         $result   = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -256,21 +253,14 @@ class Client{
      */
     public function getSlots($scheduleId, $resourceId = null, $startDateTime = null, $endDateTime = null){
 
-        $endpoint = $this -> root . config::SCHEDULES . $scheduleId . config::SLOTS;
+        $endpoint = $this -> root . str_replace(':scheduleId', $scheduleId, config::$routes[__FUNCTION__]);
 
-        if($resourceId || $startDateTime || $endDateTime){
-
-            $endpoint = $endpoint . "?resourceId=" . $resourceId;
-            $endpoint = $endpoint . "&startDateTime=" . $startDateTime;
-            $endpoint = $endpoint . "&endDateTime=" . $endDateTime;
-        }
-
-
+            $endpoint .= $this->buildFilters(array(
+                'resourceId'=>$resourceId,
+                'startDateTime'=>$startDateTime,
+                'endDateTime'=>$endDateTime,));
+  
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -284,21 +274,11 @@ class Client{
      * @param integer $resourceId
      * @return boolean|Ambigous <boolean, mixed>
      */
-    public function getResource($resourceId = null){
+    public function getResource($resourceId){
 
-        if(isset($resourceId)){
-
-            $endpoint = $this -> root . config::GETRESOURCES . $resourceId;
-        }else{
-
-            return false;
-        }
-
+        $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
+  
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -306,13 +286,9 @@ class Client{
 
     public function getAllResources(){
 
-        $endpoint = $this -> root . config::GETRESOURCES . '/';
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -323,13 +299,9 @@ class Client{
      */
     public function getResourceStatuses(){
 
-        $endpoint = $this -> root . config::GETRESOURCES . '/' . STATUS / '/';
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -340,34 +312,14 @@ class Client{
      */
     public function getResourceStatusReasons(){
 
-        $endpoint = $this -> root . config::GETRESOURCES . '/' . config::STATUS . '/' . config::STATUSREASONS;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
     }
 
-    /**
-     * @return boolean|Ambigous <boolean, mixed>
-     */
-    public function getResourceTypes(){
-
-        $endpoint = $this -> root . config::GETRESOURCES . config::RESOURCETYPES;
-
-        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
-
-        return $result;
-
-    }
 
     public function createResource($resourceObject){
 
@@ -399,11 +351,7 @@ class Client{
 
             $result = $this -> call($endpoint, $resourceObject, 'post', true);
 
-            if( ! $result){
-                return false;
-            }
-
-            return $result;
+          return $result;
         }
 
         return false;
@@ -421,11 +369,7 @@ class Client{
             $endpoint = $this -> root . config::GETRESOURCES . $resourceId;
 
             $result = $this -> call($endpoint, null, 'delete', true);
-
-            if( ! $result){
-                return false;
-            }
-
+           
             return $result;
         }
 
@@ -435,45 +379,14 @@ class Client{
 
     // Accessory Functions
 
-    /**
-     * Gets all accessories if $accessoryId is null
-     * otherwise if $accessoryId is a valid integer
-     * the function will return just that accessory.
-     * Will return false if accessory id or accessories don't exist.
-     *
-     * @param integer $accessoryId        	
-     * @return boolean|Ambigous <boolean, mixed>
-     */
-    public function getAccessory($accessoryId){
-
-        if(isset($accessoryId)){
-
-            $endpoint = $this -> root . config::GETACCESSORY . '/' . $accessoryId;
-        }else{
-
-            return false;
-        }
-        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
-
-        return $result;
-
-    }
-
+   
     public function getAllAccessories(){
 
-        $endpoint = $this -> root . config::GETACCESSORY;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
-        if( ! $result){
-            return false;
-        }
-
-        return $result;
+       return $result;
 
     }
 
@@ -534,25 +447,15 @@ class Client{
      */
     public function getCategoryAttributes($categoryId){
 
-        if( ! is_int($categoryId)){
-            return false;
-        }
-
-        if($categoryId != ATT_CAT_RESERVATION || $categoryId != ATT_CAT_USER || $categoryId != ATT_CAT_RESOURCE){
+     
+        if($categoryId != ATT_CAT_RESERVATION && $categoryId != ATT_CAT_USER && $categoryId != ATT_CAT_RESOURCE){
 
             return false;
         }
 
-        if( ! $this -> isAuthenticated())
-            return false;
+       $endpoint = $this -> root . str_replace(':categoryId', $categoryId, config::$routes[__FUNCTION__]);
 
-        $endpoint = $this -> root . config::GETCATATTRIBUTE . $categoryId;
-
-        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
+       $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
 
@@ -565,17 +468,9 @@ class Client{
      */
     public function getAttribute($attributeId){
 
-        if( ! is_int($attributeId)){
-            return false;
-        }
-
-        $endpoint = $this -> root . config::GETATTRIBUTE . $attributeId;
+        $endpoint = $this -> root . str_replace(':attributeId', $attributeId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -588,19 +483,15 @@ class Client{
      */
     public function getAvailability($dateTime = null){
 
-        if($dateTime == null){
+        if(!isset($dateTime)){
 
-            $endpoint = $this -> root . config::GETAVAILABILITY;
+            $endpoint = $this -> root . config::$routes[__FUNCTION__];
         }else{
 
-            $endpoint = $this -> root . config::GETAVAILABILITY . '?dateTime=' . urlencode($dateTime);
+            $endpoint = $this -> root . config::$routes[__FUNCTION__] . '?dateTime=' . urlencode($dateTime);
         }
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -611,21 +502,22 @@ class Client{
      * @param integer $groupId        	
      * @return boolean|Ambigous <boolean, mixed>
      */
-    public function getGroups($groupId = null){
+    public function getGroup($groupId){
 
-        if(isset($groupId) && is_int($groupId)){
-
-            $endpoint = $this -> root . config::GETGROUPS . $groupId;
-        }else{
-
-            $endpoint = $this -> root . config::GETGROUPS;
-        }
+        $endpoint = $this -> root . str_replace(':groupId', $groupId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
-        if( ! $result){
-            return false;
-        }
+        return $result;
+
+    }
+    
+    
+     public function getAllGroups(){
+
+       $endpoint = $this -> root . config::$routes[__FUNCTION__];
+      
+       $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
 
@@ -647,10 +539,6 @@ class Client{
         $endpoint = $this -> root . config::RESERVATIONS . $referenceNumber . '/Approval';
 
         $result = $this -> call($endpoint, 'post', null, true);
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -696,10 +584,6 @@ class Client{
 
         $result = $this -> call($endpoint, $_updateObject, $_updateopt, true);
 
-        if( ! $result){
-            return false;
-        }
-
         return $result;
 
     }
@@ -715,10 +599,6 @@ class Client{
         $endpoint = $this -> root . config::USERS . $userId;
 
         $result = $this -> call($endpoint, $userObject, 'post', true);
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -739,27 +619,15 @@ class Client{
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
-        if( ! $result){
-            return false;
-        }
-
         return $result;
 
     }
 
     public function getUser($userId){
 
-        if( ! $this -> isAuthenticated())
-            return false;
-
-        $endpoint = $this -> root . config::USERS . $userId;
-
+        $endpoint = $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 
@@ -767,16 +635,9 @@ class Client{
 
     public function deleteUser($userId){
 
-        if( ! $this -> isAuthenticated())
-            return false;
-
         $endpoint = $this -> root . config::USERS . $userId;
 
         $result = $this -> call($endpoint, null, 'delete', true);
-
-        if( ! $result){
-            return false;
-        }
 
         return $result;
 

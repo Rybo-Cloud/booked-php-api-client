@@ -40,15 +40,17 @@ and open the template in the editor.
         $username = filter_var($_POST['username']);
     
         $api = new \BookedAPI\Client($username,$password);
-       
+       $s = $api->getAllSchedules();
+       $sid = $s['schedules'][0]['id'];
         $test = array(
             
-                'getAllSchedules' => $api->getAllSchedules(),
+                'getAllSchedules' => $s,
                 'getAllUsers' => $api->getAllUsers(),
+                'getSchedule' => $api-> getSchedule($sid),
                 'getAllReservations' => $api->getAllReservations(),      
                 'getAllResources' => $api->getAllResources(),     
                 'getResourceStatuses' => $api->getResourceStatuses(),     
-                'getResourceStatusReasons' => $api->getResourceStatusReasons(),      
+                'getAllGroups' => $api->getAllGroups(),      
                 'getResourceTypes' => $api->getResourceTypes(),    
                 'getAllAccessories' => $api->getAllAccessories(),
          );
