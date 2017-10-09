@@ -182,24 +182,17 @@ class Client{
 
     }
 
-    public function getReservation($referenceNumber = null, $userId = null, $resourceId = null, $scheduleId = null, $startDateTime = null, $endDateTime = null){
-
-        if(isset($referenceNumber)){
-
-            $endpoint = $this -> root . config::GETRESERVATIONS . $referenceNumber;
+    //$options is array of $referenceNumber = null, $userId = null, $resourceId = null, $scheduleId = null, $startDateTime = null, $endDateTime = null
+    public function getReservation($options = array()){
+  
+        if(isset($options) && count($options) > 0){
+  
+            $endpoint = $this -> root . config::FILTERRESERVATION . $this->buildFilters($options);
+      
         }else{
-
-            if(isset($userId) || isset($resourceId) || isset($scheduleId) || isset($startDateTime) || isset($endDateTime)){
-
-                $filters = '?userId=' . $userId . '&resourceId=' . $resourceId . '&scheduleId=' . $scheduleId . '&startDateTime=' . $startDateTime . '&endDateTime=' . $endDateTime;
-
-                $endpoint = $this -> root . config::FILTERRESERVATION . $filters;
-            }else{
-
-                return false;
-            }
+            return false;
         }
-
+  
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         if( ! $result){
@@ -220,7 +213,6 @@ class Client{
 
         $endpoint = $this -> root . config::SCHEDULES;
 
-
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         if( ! $result){
@@ -238,7 +230,7 @@ class Client{
      */
     public function getSchedule($scheduleId){
 
-        $endpoint = $this -> root . config::SCHEDULES . $scheduleId;
+        $endpoint = $this -> root . config::SCHEDULES . '/' . $scheduleId;
         $result   = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         if( ! $result){
@@ -294,7 +286,7 @@ class Client{
      */
     public function getResource($resourceId = null){
 
-        if(isset($resourceId) && is_int($resourceId)){
+        if(isset($resourceId)){
 
             $endpoint = $this -> root . config::GETRESOURCES . $resourceId;
         }else{
@@ -732,19 +724,16 @@ class Client{
 
     }
 
-    public function getAllUsers($username = null, $email = null, $firstName = null, $lastName = null, $phone = null, $organization = null){
-        if( ! self::isAuthenticated()){
-            return false;
-        }
-        if($username || $email || $firstName || $lastName || $phone || $organization){
-            $username     = urlencode($username);
-            $email        = urlencode($email);
-            $firstName    = urlencode($firstName);
-            $lastName     = urlencode($lastName);
-            $phone        = urlencode($phone);
-            $organization = urlencode($organization);
-            $endpoint     = $this -> root . config::USERS . '?username=' . $username . '&email=' . $email . '&firstName=' . $firstName . '&lastName=' . $lastName . '&phone=' . $phone . '&organization=' . $organization;
+    public function getAllUsers($options = array()){
+       
+        
+        if(count($options)> 0){
+           
+            $endpoint     = $this -> root . config::USERS . $this->buildFilters($options);
+        
+            
         }else{
+            
             $endpoint = $this -> root . config::USERS . '/';
         }
 
@@ -946,6 +935,18 @@ class Client{
 
     }
     
-    
+    private function buildFilters($options){
+        
+         $filters = '?';
+            
+            foreach($options as $filter => $value){
+                
+                $filters .= isset($value) ? '&' . $filter . '=' . urlencode($value) : '';
+                
+            }
+
+               return strlen($filters) > 1 ? $filters : '';
+        
+    }
 
 }

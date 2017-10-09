@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+namespace BookedAPI\Classes;
 /**
  * Description of objects
  *
@@ -38,22 +38,22 @@ class objects{
      * @param array $endReminderObject        	
      * @return array
      */
-    public static function buildReservationObject($userId, $title, $resourceId, $resourcesObject = array(), $accessoriesObject = array(), $customAttributesObject = array(), $description = null, $startDateTime, $endDateTime, $recurrenceRuleObject = array(), $inviteesObject = array(), $participantsObject = array(), $startReminderObject = array(), $endReminderObject = array()){
+    public static function buildReservationObject($userId, $title, $resourceId, $resourcesObject, $accessoriesObject, $customAttributesObject, $description, $startDateTime, $endDateTime, $recurrenceRuleObject, $inviteesObject, $participantsObject, $startReminderObject, $endReminderObject){
         $reservationObject = array(
-            'accessories'      => $accessoriesObject,
-            'customAttributes' => $customAttributesObject,
+            'accessories'      => (array)$accessoriesObject,
+            'customAttributes' => (array)$customAttributesObject,
             'description'      => (string) $description,
-            'endDateTime'      => $endDateTime,
-            'startDateTime'    => $startDateTime,
-            'invitees'         => $inviteesObject,
-            'participants'     => $participantsObject,
+            'endDateTime'      => (string)$endDateTime,
+            'startDateTime'    => (string)$startDateTime,
+            'invitees'         => (array)$inviteesObject,
+            'participants'     => (array)$participantsObject,
             'resourceId'       => (int) $resourceId,
-            'resources'        => $resourcesObject,
-            'recurrenceRule'   => $recurrenceRuleObject,
+            'resources'        => (array)$resourcesObject,
+            'recurrenceRule'   => (array)$recurrenceRuleObject,
             'title'            => (string) $title,
             'userId'           => (int) $userId,
-            'startReminder'    => $startReminderObject,
-            'endReminder'      => $endReminderObject
+            'startReminder'    => (array)$startReminderObject,
+            'endReminder'      => (array)$endReminderObject
         );
 
         return $reservationObject;
@@ -141,7 +141,7 @@ class objects{
 
     // recurrenceRule
     // {"type":"daily|monthly|none|weekly|yearly","interval":3,"monthlyType":"dayOfMonth|dayOfWeek|null","weekdays":[0,1,2,3,4,5,6],"repeatTerminationDate":"2015-09-16T20:51:36-0700"}
-    public static function buildRecurrenceRuleObject($type, $interval, $monthlyType, $weekdays = array(), $repeatTerminationDate){
+    public static function buildRecurrenceRuleObject($type, $interval, $monthlyType, $repeatTerminationDate, $weekdays = array()){
         $rule = array(
             'type'                  => (string) $type,
             'interval'              => (int) $interval,
@@ -186,12 +186,12 @@ class objects{
 
     // {"name":"resource name","location":"location","contact":"contact information","notes":"notes","minLength":"1d0h0m","maxLength":"3600","requiresApproval":true,"allowMultiday":true,"maxParticipants":100,"minNotice":"86400","maxNotice":"0d12h30m","description":"description","scheduleId":10,"autoAssignPermissions":true,"customAttributes":[{"attributeId":1,"attributeValue":"attribute value"}],"sortOrder":1,"statusId":1,"statusReasonId":2,"resourceTypeId":1}
     public static function buildResourceObject(
-            $name, $location = null, $contact = null, $notes = null, $minLength, // in "seconds" or "1d2h3m" format
+            $name, $location, $contact, $notes, $minLength, // in "seconds" or "1d2h3m" format
             $maxLength, // in "seconds" or "1d2h3m" format
-            $requiresApproval = false, $allowMultiday = false, $maxParticipants, $minNotice, // in "seconds" or "1d2h3m" format
+            $requiresApproval, $allowMultiday, $maxParticipants, $minNotice, // in "seconds" or "1d2h3m" format
             $maxNotice, // in "seconds" or "1d2h3m" format
-            $description = null, $scheduleId, $autoAssignPermissions = true, $customAttributesObject = array(), // {"attributeId":1,"attributeValue":"attribute value"}
-            $sortOrder = 0, $statusId = null, $statusReasonId = null, $resourceTypeId = null){
+            $description, $scheduleId, $autoAssignPermissions, $customAttributesObject, // {"attributeId":1,"attributeValue":"attribute value"}
+            $sortOrder, $statusId, $statusReasonId, $resourceTypeId){
 
         $resourceObject = array(
             'name'                  => (string) $name,
@@ -230,7 +230,7 @@ class objects{
     }
 
     //{"password":"unencrypted password","language":"en_us","firstName":"first","lastName":"last","emailAddress":"email@address.com","userName":"username","timezone":"America\/Chicago","phone":"123-456-7989","organization":"organization","position":"position","customAttributes":[{"attributeId":99,"attributeValue":"attribute value"}],"groups":[1,2,4]}
-    public static function buildUserobject($password, $language = 'en_us', $firstName = null, $lastName = null, $emailAddress = null, $userName, $timezone = YOURTIMEZONE, $phone = null, $organization = null, $position = null, $customAttributesObject = array(), $groupsObject = array()){
+    public static function buildUserobject($password, $userName, $language = 'en_us', $firstName = null, $lastName = null, $emailAddress = null, $timezone = YOURTIMEZONE, $phone = null, $organization = null, $position = null, $customAttributesObject = array(), $groupsObject = array()){
         $userobject = array(
             'password'         => (string) $password,
             'language'         => (string) $language,
