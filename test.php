@@ -1,4 +1,6 @@
+<?php
 
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -51,7 +53,6 @@ and open the template in the editor.
                 'getAllResources' => $api->getAllResources(),     
                 'getResourceStatuses' => $api->getResourceStatuses(),     
                 'getAllGroups' => $api->getAllGroups(),      
-                'getResourceTypes' => $api->getResourceTypes(),    
                 'getAllAccessories' => $api->getAllAccessories(),
          );
        
@@ -60,10 +61,9 @@ and open the template in the editor.
        echo '<p>Authenticated:  ' . ($api->isAuthenticated() ? 'Yes':'No') . '<br>'; 
        
        foreach($test as $key => $value){
-       echo '<br>'. $key . '<br>';
-           if(!is_bool($value)){
+            echo '<br>'. $key . '<br>';
              var_dump($value);
-           }
+           
         }
         echo '</p>';
     }

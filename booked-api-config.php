@@ -73,43 +73,45 @@ class config{
     const CHECK_BOX        = 4;
     //Other Settings
     const TIMEOUT = 600;
-
+const NUMBEROFRETRIES = 2;
+const TIMEBETWEENRETRIES = 5;
     public static $routes = array(
+        'doAuth'=>'/Authentication/Authenticate',
         'getAllAccessories'       => '/Accessories/',
-        'CreateCustomAttribute'   => '/Attributes/',
+        'createCustomAttribute'   => '/Attributes/',
         'updateCustomAttribute'   => '/Attributes/:attributeId',
         'getCategoryAttributes'   => '/Attributes/Category/:categoryId', //RESERVATION = 1, USER = 2, RESOURCE = 4
         'getAttribute'            => '/Attributes/:attributeId',
-        'DeleteCustomAttribute'   => '/Attributes/:attributeId',
+        'deleteCustomAttribute'   => '/Attributes/:attributeId',
         'getAllGroups'            => '/Groups/',
-        'GetGroup'                => '/Groups/:groupId',
-        'CreateReservation'       => '/Reservations/',
-        'UpdateReservation'       => '/Reservations/:referenceNumber',
+        'getGroup'                => '/Groups/:groupId',
+        'createReservation'       => '/Reservations/',
+        'updateReservation'       => '/Reservations/:referenceNumber',
         'approveReservation'      => '/Reservations/:referenceNumber/Approval',
         'checkInReservation'      => '/Reservations/:referenceNumber/CheckIn',
         'checkOutReservation'     => '/Reservations/:referenceNumber/CheckOut',
         'getAllReservations'      => '/Reservations/',
         'getReservation'          => '/Reservations/:referenceNumber',
-        'DeleteReservation'       => '/Reservations/:referenceNumber',
-        'CreateResource'          => '/Resources/',
-        'UpdateResource'          => '/Resources/:resourceId',
+        'deleteReservation'       => '/Reservations/:referenceNumber',
+        'createResource'          => '/Resources/',
+        'updateResource'          => '/Resources/:resourceId',
         'getResourceStatuses'     => '/Resources/Status',
         'getAllResources'         => '/Resources/',
         'getResourceStatusReasons'        => '/Resources/Status/Reasons',
         'getAvailability'         => '/Resources/Availability',
-        'getAllGroups'               => '/Resources/Groups',
+        'getAllResourceGroups'               => '/Resources/Groups',
         'getResource'             => '/Resources/:resourceId',
         'getResourceAvailability' => '/Resources/:resourceId/Availability',
         'DeleteResource'          => '/Resources/:resourceId',
         'getAllSchedules'         => '/Schedules/',
         'getSchedule'             => '/Schedules/:scheduleId',
         'getSlots'                => '/Schedules/:scheduleId/Slots',
-        'CreateUser'              => '/Users/', //This service is only available to application administrators
-        'UpdateUser'              => '/Users/:userId', //This service is only available to application administrators
-        'UpdatePassword'          => '/Users/:userId/Password', //This service is only available to application administrators
-        'GetAllUsers'             => '/Users/',
+        'createUser'              => '/Users/', //This service is only available to application administrators
+        'updateUser'              => '/Users/:userId', //This service is only available to application administrators
+        'updatePassword'          => '/Users/:userId/Password', //This service is only available to application administrators
+        'getAllUsers'             => '/Users/',
         'getUser'                 => '/Users/:userId',
-        'DeleteUser'              => '/Users/:userId', // This service is only available to application administrators
+        'deleteUser'              => '/Users/:userId', // This service is only available to application administrators
     );
 
 }

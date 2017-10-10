@@ -26,7 +26,7 @@ class Client{
     private $root;
     private $ch;
     private $isAuthenticated = false;
-
+    private $retry = 0;
     /**
      * Booked client constructor
      *
@@ -131,7 +131,7 @@ class Client{
             return true;
         }
 
-        $endpoint = $this -> root . config::AUTHENTICATE;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $params ['username'] = $this -> username;
 
@@ -175,9 +175,7 @@ class Client{
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
-        if( ! $result){
-            return false;
-        }
+      
         return $result;
 
     }
@@ -210,11 +208,7 @@ class Client{
         $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-
-        if( ! $result){
-            return false;
-        }
-
+     
         return $result;
 
     }
@@ -329,7 +323,7 @@ class Client{
 
     public function createResource($resourceObject){
 
-        return getResponse(config::GETRESOURCES, $resourceObject);
+        return getResponse( config::$routes[__FUNCTION__], $resourceObject);
 
     }
 
@@ -351,16 +345,13 @@ class Client{
 
     public function updateResource($resourceId, $resourceObject){
 
-        if(isset($resourceId) && isset($resourceObject)){
-
-            $endpoint = $this -> root . config::GETRESOURCES . $resourceId;
+        
+            $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
 
             $result = $this -> call($endpoint, $resourceObject, 'post', true);
 
           return $result;
-        }
-
-        return false;
+ 
 
     }
 
@@ -372,7 +363,7 @@ class Client{
 
         if(isset($resourceId)){
 
-            $endpoint = $this -> root . config::GETRESOURCES . $resourceId;
+            $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
 
             $result = $this -> call($endpoint, null, 'delete', true);
            
@@ -402,9 +393,9 @@ class Client{
      * @param array $attibuteObject
      * @return boolean|Ambigous <boolean, mixed>
      */
-    public function createCustomAttribute($attibuteObject){
+    public function createCustomAttribute($attibute){
 
-        return getResponse(config::GETATTRIBUTE, $attibuteObject);
+        return getResponse(config::$routes[__FUNCTION__], $attibute);
 
     }
 
@@ -430,7 +421,7 @@ class Client{
     public function deleteCustomAttribute($attributeId){
 
 
-        $endpoint = $this -> root . config::GETATTRIBUTE . $attributeId;
+        $endpoint = $this -> root . str_replace(':attributeId', $attributeId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, null, 'delete', true);
 
@@ -546,9 +537,9 @@ class Client{
      * @param array $reservationObject        	
      * @return boolean|Ambigous <boolean, mixed>
      */
-    public function createReservation($reservationObject){
+    public function createReservation($reservation = array()){
 
-        return $this -> getResponse(config::RESERVATIONS, $reservationObject);
+        return $this -> getResponse(config::$routes[__FUNCTION__], $reservation);
 
     }
 
@@ -562,13 +553,7 @@ class Client{
 
     }
 
-    /**
-     * @param string $referenceNumber
-     * @param array $updatedReservationObject
-     * @param string $updateScope
-     * @return boolean|Ambigous <boolean, mixed>
-     */
-    public function updateReservation($referenceNumber, $updatedReservationObject, $updateScope = null){
+    public function updateReservation($referenceNumber, $updatedReservation, $updateScope = null){
 
         // updateScope are this|full|future
         $_options = array(
@@ -577,7 +562,7 @@ class Client{
             'method'  => 'post',
         );
 
-        return update_delete(config::RESERVATIONS, $updatedReservationObject, $_options);
+        return update_delete(config::$routes[__FUNCTION__], $updatedReservation, $_options);
 
     }
 
@@ -590,7 +575,7 @@ class Client{
             'method'  => 'delete',
         );
 
-        return update_delete(config::RESERVATIONS, null, $_options);
+        return update_delete(config::$routes[__FUNCTION__], null, $_options);
 
     }
 
@@ -606,15 +591,28 @@ class Client{
 
     }
 
-    public function createUser($userObject){
+    public function createUser($user){
 
-        return $this -> getResponse(USERS, $userObject);
+        return $this -> getResponse(config::$routes[__FUNCTION__], $user);
 
     }
 
+     public function updatePassword($userId, $password){
+
+        $endpoint = $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
+
+        $p = array('Password'=>$password);
+        
+        $result = $this -> call($endpoint, $p, 'delete', true);
+
+        return $result;
+
+    }
+
+    
     public function updateUser($userId, $userObject){
 
-        $endpoint = $this -> root . config::USERS . $userId;
+        $endpoint = $this -> root . config::$routes[__FUNCTION__] . $userId;
 
         $result = $this -> call($endpoint, $userObject, 'post', true);
 
@@ -627,12 +625,12 @@ class Client{
         
         if(count($options)> 0){
            
-            $endpoint     = $this -> root . config::USERS . $this->buildFilters($options);
+            $endpoint     = $this -> root . config::$routes[__FUNCTION__] . $this->buildFilters($options);
         
             
         }else{
             
-            $endpoint = $this -> root . config::USERS . '/';
+            $endpoint = $this -> root . config::$routes[__FUNCTION__];
         }
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
@@ -653,7 +651,7 @@ class Client{
 
     public function deleteUser($userId){
 
-        $endpoint = $this -> root . config::USERS . $userId;
+        $endpoint = $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, null, 'delete', true);
 
@@ -753,6 +751,25 @@ class Client{
         }
 
         if(floor($info ['http_code'] / 100) >= 4){
+            switch($info['http_code']){
+                case 401:
+                   $exception = new Exception('Not logged in');
+                    if($this->retry < config::NUMBEROFRETRIES){
+                        $this->retry = $this->retry + 1;
+                         sleep (config::TIMEBETWEENRETRIES );
+                        $this->call($endpoint, $params, $method,true);
+                        return 401;
+                    }
+                    
+               break;
+                case 501:
+                   $exception = new Exception('Server Error');
+                    return 501;
+                break;
+            default :
+                $exception = new Exception('Error code ' . $info['http_code'] .'.');
+                return 0;
+                    }
             return false;
         }
 
