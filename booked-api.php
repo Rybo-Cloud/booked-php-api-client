@@ -2,7 +2,7 @@
 
 /**
  * Title: booked-php-api-client
- * Ver: 0.2.1 Alpha
+ * Ver: v0.2.99 Alpha
  * By: Ryan C Crawford
  * Email: ryanccrawford@live.com
  * 

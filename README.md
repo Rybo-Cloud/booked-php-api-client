@@ -1,8 +1,9 @@
 # booked-php-api-client
 Booked PHP API Client Library
+v0.2.99 Alpha
 by ryanccrawford@live.com
 
-<h2>Completely Rewritten! </h2>
+<h2>Completely Rewritten! v0.2.99 Alpha</h2>
 
 <p>This is a simple to use PHP client/wrapper library to be used with Booked (formerly phpScheduleIt) RESTful API by nick@twinkletoessoftware.com found at <a href='http://sourceforge.net/projects/phpscheduleit'>Booked Home</a></p>
 <p>This library has been rewritten and has some work to be done. However this is a prerelease to get everyone excited. Please report any bugs or suggestions to <a href="mailto:ryan@mytrueserenity.com">ryan@mytrueserenity.com</a></p>

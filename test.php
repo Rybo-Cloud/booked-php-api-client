@@ -62,7 +62,7 @@ and open the template in the editor.
        
        foreach($test as $key => $value){
             echo '<br>'. $key . '<br>';
-             var_dump($value);
+            print_r($value  );
            
         }
         echo '</p>';
