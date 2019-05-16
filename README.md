@@ -6,8 +6,8 @@ by ryanccrawford@live.com
 <h2>Completely Rewritten! v0.2.99 Alpha</h2>
 
 <p>This is a simple to use PHP client/wrapper library to be used with Booked (formerly phpScheduleIt) RESTful API by nick@twinkletoessoftware.com found at <a href='http://sourceforge.net/projects/phpscheduleit'>Booked Home</a></p>
-<p>This library has been rewritten and has some work to be done. However this is a prerelease to get everyone excited. Please report any bugs or suggestions to <a href="mailto:ryan@mytrueserenity.com">ryan@mytrueserenity.com</a></p>
-<p>This project started as a way for me to design a customized Rental Booking System for a wonderful place called <a href='https://mytrueserenity.com'>True Serenity</a>. So because I have yet to make a contribution to the wonderful world of open source software, I decided to make this my first public attempt. I hope it is useful to someone.</p>
+<p>This library has been rewritten and has some work to be done. However this is a prerelease to get everyone excited. Please report any bugs or suggestions to <a href="mailto:ryanccrawford@live.com">ryanccrawford@live.com</a></p>
+<p>This project started as a way for me to design a customized Rental Booking System for a place I worked for in the past. I hope it is useful to someone.</p>
 <h1>INSTALLATION</h1>
 <ul><li>You must have PHP 5.6 or higher and you must have CURL installed. No other dependencies are required (Except for Booked)</li></ul>
 <p>1st - You need to edit the booked-api-config.php file so that your booked web services URL points to your Booked API (Usually http://your-domain.com/web/services/). Make sure to change the Time Zone const to match yours. Then save the file:</p> 
