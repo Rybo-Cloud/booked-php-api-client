@@ -19,7 +19,7 @@ namespace BookedAPI;
 use DateTime;
 use Exception;
 
-class Client{
+class Client {
 
     private $username;
     private $password;
@@ -183,7 +183,7 @@ class Client{
     //$options is array of $referenceNumber = null, $userId = null, $resourceId = null, $scheduleId = null, $startDateTime = null, $endDateTime = null
     public function getReservation($referenceNumber, $options = array()){
   
-        $endpoint = $this->root . tr_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
+        $endpoint = $this->root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
        
         if(isset($options) && count($options) > 0){
   
@@ -546,8 +546,7 @@ class Client{
     public function approveReservation($referenceNumber){
 
         $endpoint = $this -> root .  str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
-
-        $result = $this -> call($endpoint, 'post', null, true);
+        $result = $this -> call($endpoint, null, 'post', true);
 
         return $result;
 
@@ -691,6 +690,7 @@ class Client{
      */
     private function call($endpoint, $params = null, $method = null, $postAuth = false){
 
+        $header = array();
         $ch = $this -> ch;
 
         if($postAuth){
@@ -698,7 +698,8 @@ class Client{
             if( ! $this->isAuthenticated){
                 return false;
             }
-            $this -> setAuthHttpHeader($_SESSION ['bookedapi_sessionToken'], $_SESSION ['bookedapi_userId']);
+            $header = $this -> setAuthHttpHeader($_SESSION ['bookedapi_sessionToken'], $_SESSION ['bookedapi_userId']);
+            
         }
 
         curl_setopt($ch, CURLOPT_URL, $endpoint);
@@ -710,7 +711,7 @@ class Client{
         switch($method){
             case 'post':
 
-                $header = array('Content-Type: application/json');
+                $header[] = 'Content-Type: application/json';
                 curl_setopt($this -> ch, CURLOPT_POST, true);
                 curl_setopt($this -> ch, CURLOPT_HTTPGET, false);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -745,7 +746,7 @@ class Client{
         $response_body = curl_exec($ch);
 
         $info = curl_getinfo($ch);
-
+				
         if(curl_error($ch)){
             return json_decode($info, true);
         }
@@ -790,6 +791,7 @@ class Client{
         );
 
         curl_setopt($this -> ch, CURLOPT_HTTPHEADER, $authHeader);
+        return $authHeader;
 
     }
 
