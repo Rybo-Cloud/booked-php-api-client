@@ -118,7 +118,7 @@ class Client{
 
     }
 
-    private function __destruct(){
+    public function __destruct(){
         if(is_resource($this -> ch)){
             curl_close($this -> ch);
         }
@@ -695,7 +695,7 @@ class Client{
 
         if($postAuth){
 
-            if( ! self::isAuthenticated){
+            if( ! $this->isAuthenticated){
                 return false;
             }
             $this -> setAuthHttpHeader($_SESSION ['bookedapi_sessionToken'], $_SESSION ['bookedapi_userId']);
