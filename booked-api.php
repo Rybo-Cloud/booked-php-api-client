@@ -800,7 +800,7 @@ class Client {
      * @return boolean
      */
     private static function hasSessionExpired(){
-        date_default_timezone_set(YOURTIMEZONE);
+        date_default_timezone_set(config::YOURTIMEZONE);
         if( ! isset($_SESSION ['bookedapi_sessionExpires'])){
             return true;
         }
