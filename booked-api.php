@@ -611,7 +611,7 @@ class Client {
 
     public function updateUser($userId, $userObject){
 
-        $endpoint = $this -> root . config::$routes[__FUNCTION__] . $userId;
+        $endpoint =  $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, $userObject, 'post', true);
 
