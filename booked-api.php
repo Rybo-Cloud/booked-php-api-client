@@ -5,13 +5,13 @@
  * Ver: v0.2.99 Alpha
  * By: Ryan C Crawford
  * Email: ryanccrawford@live.com
- * 
- * This file is part of Booked PHP Client Library. 
+ *
+ * This file is part of Booked PHP Client Library.
  * There are other files that make up the whole library
  * and that are dependent on this file or that this file is dependent on.
- * 
- * 
- *   
+ *
+ *
+ *
  */
 
 namespace BookedAPI;
@@ -175,22 +175,22 @@ class Client {
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
-      
+
         return $result;
 
     }
 
     //$options is array of $referenceNumber = null, $userId = null, $resourceId = null, $scheduleId = null, $startDateTime = null, $endDateTime = null
     public function getReservation($referenceNumber, $options = array()){
-  
+
         $endpoint = $this->root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
-       
+
         if(isset($options) && count($options) > 0){
-  
+
             $endpoint .= $this->buildFilters($options);
-      
+
         }
-  
+
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
@@ -208,7 +208,7 @@ class Client {
         $endpoint = $this -> root . config::$routes[__FUNCTION__];
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
-     
+
         return $result;
 
     }
@@ -221,7 +221,7 @@ class Client {
     public function getSchedule($scheduleId){
 
         $endpoint = $this -> root . str_replace(':scheduleId', $scheduleId, config::$routes[__FUNCTION__]);
-        
+
         $result   = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
@@ -229,12 +229,12 @@ class Client {
     }
 
     /**
-     * Loads slots for a specific schedule 
-     * 
-     * Optional query string parameters: resourceId, startDateTime, endDateTime. 
-     * If no dates are provided the default schedule dates will be returned. 
+     * Loads slots for a specific schedule
+     *
+     * Optional query string parameters: resourceId, startDateTime, endDateTime.
+     * If no dates are provided the default schedule dates will be returned.
      * If dates do not include the timezone offset, the timezone of the doAuthd user will be assumed.
-     * 
+     *
      * @param integer $scheduleId
      * @param integer $resourceId
      * @param string $startDateTime
@@ -249,7 +249,7 @@ class Client {
                 'resourceId'=>$resourceId,
                 'startDateTime'=>$startDateTime,
                 'endDateTime'=>$endDateTime,));
-  
+
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
@@ -267,7 +267,7 @@ class Client {
     public function getResource($resourceId){
 
         $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
-  
+
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
@@ -283,15 +283,15 @@ class Client {
         return $result;
 
     }
-    
+
     public function getResourceAvailability($resourceId){
-       
+
         $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
-  
+
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
-        
+
     }
 
     /**
@@ -335,23 +335,23 @@ class Client {
         if( ! isset($_opt['method'])){
             $_opt[] = [
                 'method'     => 'post',
-                'autherized' => isAuthenticated(),
+                'autherized' => $this->isAuthenticated(),
             ];
         }
 
-        return $this -> call($endpoint, $_createThis, $_opt);
+        return $this -> call($endpoint, $_createThis, $_opt['method'], $this->isAuthenticated());
 
     }
 
     public function updateResource($resourceId, $resourceObject){
 
-        
+
             $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
 
             $result = $this -> call($endpoint, $resourceObject, 'post', true);
 
           return $result;
- 
+
 
     }
 
@@ -366,7 +366,7 @@ class Client {
             $endpoint = $this -> root . str_replace(':resourceId', $resourceId, config::$routes[__FUNCTION__]);
 
             $result = $this -> call($endpoint, null, 'delete', true);
-           
+
             return $result;
         }
 
@@ -376,7 +376,7 @@ class Client {
 
     // Accessory Functions
 
-   
+
     public function getAllAccessories(){
 
         $endpoint = $this -> root . config::$routes[__FUNCTION__];
@@ -431,12 +431,12 @@ class Client {
 
     /**
      *
-     * @param integer $categoryId        	
+     * @param integer $categoryId
      * @return boolean|Ambigous <boolean, mixed>
      */
     public function getCategoryAttributes($categoryId){
 
-     
+
         if($categoryId != ATT_CAT_RESERVATION && $categoryId != ATT_CAT_USER && $categoryId != ATT_CAT_RESOURCE){
 
             return false;
@@ -452,7 +452,7 @@ class Client {
 
     /**
      *
-     * @param integer $attributeId        	
+     * @param integer $attributeId
      * @return boolean|Ambigous <boolean, mixed>
      */
     public function getAttribute($attributeId){
@@ -467,7 +467,7 @@ class Client {
 
     /**
      *
-     * @param string $dateTime        	
+     * @param string $dateTime
      * @return boolean|Ambigous <boolean, mixed>
      */
     public function getAvailability($dateTime = null){
@@ -488,7 +488,7 @@ class Client {
 
     /**
      *
-     * @param integer $groupId        	
+     * @param integer $groupId
      * @return boolean|Ambigous <boolean, mixed>
      */
     public function getGroup($groupId){
@@ -500,12 +500,12 @@ class Client {
         return $result;
 
     }
-    
-    
+
+
      public function getAllGroups(){
 
        $endpoint = $this -> root . config::$routes[__FUNCTION__];
-      
+
        $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
@@ -513,18 +513,18 @@ class Client {
     }
 
     public function checkInReservation($referenceNumber){
-        
+
         $endpoint = $this -> root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
 
         return $result;
 
-        
+
     }
-    
+
     public function checkOutReservation($referenceNumber){
-        
+
         $endpoint = $this -> root . str_replace(':referenceNumber', $referenceNumber, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, self::getAuthParams(), 'get');
@@ -534,7 +534,7 @@ class Client {
     }
     /**
      *
-     * @param array $reservationObject        	
+     * @param array $reservationObject
      * @return boolean|Ambigous <boolean, mixed>
      */
     public function createReservation($reservation = array()){
@@ -601,17 +601,17 @@ class Client {
         $endpoint = $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
 
         $p = array('Password'=>$password);
-        
+
         $result = $this -> call($endpoint, $p, 'delete', true);
 
         return $result;
 
     }
 
-    
+
     public function updateUser($userId, $userObject){
 
-        $endpoint = $this -> root . config::$routes[__FUNCTION__] . $userId;
+        $endpoint =  $this -> root . str_replace(':userId', $userId, config::$routes[__FUNCTION__]);
 
         $result = $this -> call($endpoint, $userObject, 'post', true);
 
@@ -620,15 +620,15 @@ class Client {
     }
 
     public function getAllUsers($options = array()){
-       
-        
+
+
         if(count($options)> 0){
-           
+
             $endpoint     = $this -> root . config::$routes[__FUNCTION__] . $this->buildFilters($options);
-        
-            
+
+
         }else{
-            
+
             $endpoint = $this -> root . config::$routes[__FUNCTION__];
         }
 
@@ -683,9 +683,9 @@ class Client {
 
     /**
      *
-     * @param string $endpoint        	
-     * @param array $params        	
-     * @param string $method        	
+     * @param string $endpoint
+     * @param array $params
+     * @param string $method
      * @return boolean|mixed
      */
     private function call($endpoint, $params = null, $method = null, $postAuth = false){
@@ -699,7 +699,7 @@ class Client {
                 return false;
             }
             $header = $this -> setAuthHttpHeader($_SESSION ['bookedapi_sessionToken'], $_SESSION ['bookedapi_userId']);
-            
+
         }
 
         curl_setopt($ch, CURLOPT_URL, $endpoint);
@@ -746,7 +746,7 @@ class Client {
         $response_body = curl_exec($ch);
 
         $info = curl_getinfo($ch);
-				
+
         if(curl_error($ch)){
             return json_decode($info, true);
         }
@@ -761,7 +761,7 @@ class Client {
                         $this->call($endpoint, $params, $method,true);
                         return 401;
                     }
-                    
+
                break;
                 case 501:
                    $exception = new Exception('Server Error');
@@ -780,8 +780,8 @@ class Client {
 
     /**
      *
-     * @param string $SessionToken        	
-     * @param integer $UserId        	
+     * @param string $SessionToken
+     * @param integer $UserId
      */
     private function setAuthHttpHeader($SessionToken, $UserId){
 
@@ -800,7 +800,7 @@ class Client {
      * @return boolean
      */
     private static function hasSessionExpired(){
-        date_default_timezone_set(YOURTIMEZONE);
+        date_default_timezone_set(config::YOURTIMEZONE);
         if( ! isset($_SESSION ['bookedapi_sessionExpires'])){
             return true;
         }
@@ -832,19 +832,19 @@ class Client {
         return $params;
 
     }
-    
+
     private function buildFilters($options){
-        
+
          $filters = '?';
-            
+
             foreach($options as $filter => $value){
-                
+
                 $filters .= isset($value) ? '&' . $filter . '=' . urlencode($value) : '';
-                
+
             }
 
                return strlen($filters) > 1 ? $filters : '';
-        
+
     }
 
 }
